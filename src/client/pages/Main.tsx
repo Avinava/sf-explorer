@@ -91,14 +91,20 @@ const Main = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center items-center w-full md:w-3/4">
+      <div className="flex flex-col justify-center items-center w-full md:w-3/4 mt-5">
         <div className="inline-flex">
           <span className="text-3xl font-bold">sf&nbsp;</span>
           <span className="text-3xl font-bold font-medium hover:underline text-emerald-400">command&nbsp;</span>
           <span className="text-3xl font-bold">explorer &nbsp;</span>
         </div>
-        <p className="mt-2">Find the right commands you need without digging through the documentation.</p>
-        <p className="text-sm text-gray-500">Powered by OpenAI</p>
+        <p className="mt-8">Find the right commands you need without digging through the documentation.</p>
+        <p className="mt-0">
+          sf command explorer provides a quick way to find the right commands you need directly from
+          <a className="text-emerald-400 hover:underline" href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm" target="_blank" rel="noreferrer">
+            &nbsp;sf cli documentation
+          </a>
+        </p>
+        <p className="text-sm text-gray-500 m-4">Powered by OpenAI</p>
         <div className="flex items-center border-2 p-0 w-full my-3 relative">
           <input
             className={`text-2xl font-bold font-medium p-3 flex-grow border-emerald-400 ${
@@ -141,7 +147,7 @@ const Main = () => {
             )}
           </button>
         </div>
-        <div className="mt-4 p-2 border rounded bg-gray-100">
+        <div className="m-4 p-2 border rounded bg-gray-100">
           <p className="text-xl font-medium">
             {exampleQueries[currentQuery].substring(0, currentChar)}
             <span className="animate-blink">|</span>
