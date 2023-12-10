@@ -2,6 +2,8 @@
 import { Request, Response, Router } from "express";
 import generate from "../../../services/generate";
 import { readFileSync } from "fs";
+import { rateLimit } from 'express-rate-limit'
+
 
 /**
  * List of API examples.
@@ -9,7 +11,14 @@ import { readFileSync } from "fs";
  */
 
 const router = Router();
-console.log("#######");
+
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10, // 10 requests,
+  message: "Too many requests from this IP, please try again after a minute"
+})
+
+router.use(limiter);
 
 router.get("/hello", (req: Request, res: Response) => {
   return res.status(200).send({
