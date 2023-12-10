@@ -24,7 +24,7 @@ const Main = () => {
     const queryTimer = setInterval(() => {
       setCurrentQuery((currentQuery + 1) % exampleQueries.length);
       setCurrentChar(0);
-    }, 3000);
+    }, 5000);
 
     const charTimer = setInterval(() => {
       setCurrentChar(currentChar => currentChar + 1);
