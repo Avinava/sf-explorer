@@ -4,6 +4,7 @@ import { useAppContext } from "../Context";
 
 const Main = () => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
   const { query, setQuery, response, setResponse } = useAppContext();
 
   const [currentQuery, setCurrentQuery] = React.useState(0);
@@ -59,8 +60,10 @@ const Main = () => {
         return ref;
       });
       setResponse(data);
+      setError("");
     } catch (err) {
       console.error(err);
+      setError((err as any).message);
     } finally {
       setIsLoading(false);
     }
@@ -144,6 +147,7 @@ const Main = () => {
             <span className="animate-blink">|</span>
           </p>
         </div>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
         {response.openai?.references && (
           <div className="flex flex-col items-start border-2 p-4 w-full my-3 bg-white shadow-lg openai w-full">
             <div className="mb-6 last:mb-0 bg-gray-800 text-white p-5 rounded border-l-8 border-emerald-500 mb-10 w-full">
