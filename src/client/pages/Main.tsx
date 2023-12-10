@@ -4,6 +4,7 @@ import { useAppContext } from "../Context";
 
 const Main = () => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
   const { query, setQuery, response, setResponse } = useAppContext();
 
   const [currentQuery, setCurrentQuery] = React.useState(0);
@@ -24,7 +25,7 @@ const Main = () => {
     const queryTimer = setInterval(() => {
       setCurrentQuery((currentQuery + 1) % exampleQueries.length);
       setCurrentChar(0);
-    }, 3000);
+    }, 5000);
 
     const charTimer = setInterval(() => {
       setCurrentChar(currentChar => currentChar + 1);
@@ -42,31 +43,30 @@ const Main = () => {
     return html;
   };
 
-  const doGPT = () => {
+  const doGPT = async () => {
     setIsLoading(true);
-    // do a fetch to the backend
-    fetch(`/api/v1/generate?query=${query}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        for (let i = 0; i < data.openai.references.length; i++) {
-          // remove remove consecutive br which can be seperated by space
-          data.openai.references[i].index = i;
-          data.openai.references[i].content.help = data.openai.references[i].content.help || {};
-          data.openai.references[i].content.help.html = cleanup(data.openai.references[i].content.help?.html);
-        }
-
-        setResponse(data);
-        setIsLoading(false);
-        console.log("data", data);
-      })
-      .catch(err => {
-        console.log(err);
+    try {
+      const res = await fetch(`/api/v1/generate?query=${query}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+      const data = await res.json();
+      data.openai.references = data.openai.references.map((ref: any, i: number) => {
+        ref.index = i;
+        ref.content.help = ref.content.help || {};
+        ref.content.help.html = cleanup(ref.content.help?.html);
+        return ref;
+      });
+      setResponse(data);
+      setError("");
+    } catch (err) {
+      console.error(err);
+      setError((err as any).message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (event: any) => {
@@ -91,14 +91,20 @@ const Main = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center items-center w-full md:w-3/4">
+      <div className="flex flex-col justify-center items-center w-full md:w-3/4 mt-5">
         <div className="inline-flex">
           <span className="text-3xl font-bold">sf&nbsp;</span>
           <span className="text-3xl font-bold font-medium hover:underline text-emerald-400">command&nbsp;</span>
           <span className="text-3xl font-bold">explorer &nbsp;</span>
         </div>
-        <p className="mt-2">Find the right commands you need without digging through the documentation.</p>
-        <p className="text-sm text-gray-500">Powered by OpenAI</p>
+        <p className="mt-8">Find the right commands you need without digging through the documentation.</p>
+        <p className="mt-0">
+          sf command explorer provides a quick way to find the right commands you need directly from
+          <a className="text-emerald-400 hover:underline" href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm" target="_blank" rel="noreferrer">
+            &nbsp;sf cli documentation
+          </a>
+        </p>
+        <p className="text-sm text-gray-500 m-4">Powered by OpenAI</p>
         <div className="flex items-center border-2 p-0 w-full my-3 relative">
           <input
             className={`text-2xl font-bold font-medium p-3 flex-grow border-emerald-400 ${
@@ -141,12 +147,13 @@ const Main = () => {
             )}
           </button>
         </div>
-        <div className="mt-4 p-2 border rounded bg-gray-100">
+        <div className="m-4 p-2 border rounded bg-gray-100">
           <p className="text-xl font-medium">
             {exampleQueries[currentQuery].substring(0, currentChar)}
             <span className="animate-blink">|</span>
           </p>
         </div>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
         {response.openai?.references && (
           <div className="flex flex-col items-start border-2 p-4 w-full my-3 bg-white shadow-lg openai w-full">
             <div className="mb-6 last:mb-0 bg-gray-800 text-white p-5 rounded border-l-8 border-emerald-500 mb-10 w-full">
