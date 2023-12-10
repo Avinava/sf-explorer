@@ -1,54 +1,32 @@
-"use strict";
 import { Request, Response, Router } from "express";
 import generate from "../../../services/generate";
-import { readFileSync } from "fs";
 import { rateLimit } from 'express-rate-limit'
 
-
-/**
- * List of API examples.
- * @route GET /api
- */
-
 const router = Router();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 10; // 10 requests
+const RATE_LIMIT_MESSAGE = "Too many requests from this IP, please try again after a minute";
 
 const limiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 10, // 10 requests,
-  message: "Too many requests from this IP, please try again after a minute"
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  max: MAX_REQUESTS_PER_WINDOW,
+  message: RATE_LIMIT_MESSAGE
 })
 
 router.use(limiter);
 
-router.get("/hello", (req: Request, res: Response) => {
-  return res.status(200).send({
-    message: "Hello World!",
-  });
-})
+router.get("/generate", generateResponse);
 
-
-router.get("/generate", async (req: Request, res: Response) => {
+async function generateResponse(req: Request, res: Response) {
   const { query } = req.query;
   const generateResponse = await generate.run(query as string);
 
-  const openaiResponses = [];
-
-  if(generateResponse.openai?.sourceDocuments){
-    for (const match of generateResponse.openai.sourceDocuments) {
-      openaiResponses.push({
-        ...match,
-        content: JSON.parse(readFileSync(match.metadata.source, "utf-8")),
-      });
-    }
-  }
-
-
   return res.status(200).send({
     openai: {
-      references : openaiResponses,
+      references : generateResponse.openai?.sourceDocuments,
       answer: generateResponse.openai?.text
     },
   });
-});
+}
 
 export default router;

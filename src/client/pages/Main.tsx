@@ -42,31 +42,28 @@ const Main = () => {
     return html;
   };
 
-  const doGPT = () => {
+  const doGPT = async () => {
     setIsLoading(true);
-    // do a fetch to the backend
-    fetch(`/api/v1/generate?query=${query}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        for (let i = 0; i < data.openai.references.length; i++) {
-          // remove remove consecutive br which can be seperated by space
-          data.openai.references[i].index = i;
-          data.openai.references[i].content.help = data.openai.references[i].content.help || {};
-          data.openai.references[i].content.help.html = cleanup(data.openai.references[i].content.help?.html);
-        }
-
-        setResponse(data);
-        setIsLoading(false);
-        console.log("data", data);
-      })
-      .catch(err => {
-        console.log(err);
+    try {
+      const res = await fetch(`/api/v1/generate?query=${query}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+      const data = await res.json();
+      data.openai.references = data.openai.references.map((ref: any, i: number) => {
+        ref.index = i;
+        ref.content.help = ref.content.help || {};
+        ref.content.help.html = cleanup(ref.content.help?.html);
+        return ref;
+      });
+      setResponse(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (event: any) => {
