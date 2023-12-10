@@ -81,7 +81,7 @@ const Main = () => {
           <div className="text-slate-500 inline-flex">
             <a
               className="font-medium hover:underline text-slate-50"
-              href="https://github.com/Avinava/sfdx-explorer"
+              href="https://github.com/Avinava/sf-explorer"
               target="_blank"
               rel="noreferrer"
             >
