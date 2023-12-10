@@ -1,0 +1,43 @@
+@import "tailwindcss/base";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.helpHead3 {
+  color: rgb(67 56 202);
+  font-weight: bold;
+}
+
+.codeSection {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.openai .codeSection {
+  background-color: transparent;
+  border-radius: 5px;
+  margin-top: 3px;
+  padding: 3px;
+}
+
+.codeph {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  margin-top: 3px;
+  padding: 3px;
+}
+
+.header {
+  background: #eaeaea;
+  padding: 10px;
+  margin: -16px;
+  margin-bottom: 10px;
+}
