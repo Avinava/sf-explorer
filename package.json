@@ -16,6 +16,7 @@
     "coverage": "vitest --coverage",
     "typecheck": "tsc --noEmit",
     "serve": "yarn build && cross-env NODE_ENV=production yarn ts-node ./server",
+    "serve-only": "cross-env NODE_ENV=production yarn ts-node ./server",
     "serve:local": "vite serve",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles static/* dist/assets && copyfiles index.html dist && copyfiles -f dist/client/assets/* dist/assets",
