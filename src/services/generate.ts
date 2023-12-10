@@ -19,6 +19,7 @@ class Generate {
 
     const vectorStore = await Chroma.fromExistingCollection(embeddings, {
       collectionName: process.env.COLLECTION_NAME || "sfdx-docs",
+      url: `http://localhost:${process.env.CHROMADB_PORT}`,
     });
 
     // https://stackoverflow.com/questions/76653423/how-to-combine-conversationalretrievalqachain-agents-and-tools-in-langchain

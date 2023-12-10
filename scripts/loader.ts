@@ -34,7 +34,7 @@ class Loader {
 
     const vectorStore = await Chroma.fromDocuments(docs, this.embeddings, {
       collectionName: process.env.COLLECTION_NAME || "sfdx-docs",
-      url: "http://localhost:8000", // Optional, will default to this value
+      url: `http://localhost:${process.env.CHROMADB_PORT}`,
       collectionMetadata: {
         "hnsw:space": "cosine",
       },
@@ -47,6 +47,7 @@ class Loader {
   public async deleteIfExists() {
     const vectorStore = await Chroma.fromExistingCollection(this.embeddings, {
       collectionName: process.env.COLLECTION_NAME || "sfdx-docs",
+      url: `http://localhost:${process.env.CHROMADB_PORT}`,
     });
 
     const res = await vectorStore.collection?.get();
