@@ -39,3 +39,6 @@ To publish your sf-explorer app, follow these steps:
 
 1. Run `yarn build`.
 2. Publish the generated build files to your desired hosting platform.
+
+## Inspired By
+sf-explorer was inspired by [gitexplorer](https://github.com/summitech/gitexplorer), a similar tool for finding the right Git commands.
