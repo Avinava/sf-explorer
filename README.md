@@ -4,7 +4,9 @@
 
 ## Introduction
 
-sf-explorer is a tool that helps you find the right sf commands without having to dig through the documentation. It uses vector store (chromadb) to store and index the sf CLI documentation. It leverages openai embeddings and ConversationalRetrievalQAChain from langchain to provide accurate answers from the downloaded sf documentation site.
+sf-explorer is a tool that helps you find the right sf commands without having to dig through the documentation. Under the hood, sf-explorer uses a vector store (ChromaDB) to store and index the Salesforce CLI documentation. This indexed data is then used to provide accurate and relevant command suggestions based on your queries.
+
+The tool leverages OpenAI embeddings to understand the context and semantics of your queries. It uses the ConversationalRetrievalQAChain from Langchain to generate responses, ensuring that the answers you get are not only accurate but also contextually relevant to your query.
 
 Demo : https://explorer.sfdxy.com/
 
