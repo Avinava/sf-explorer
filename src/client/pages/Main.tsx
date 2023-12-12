@@ -1,27 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Footer } from "../components/Footer";
 import { useAppContext } from "../Context";
 
+const exampleQueries = [
+  "how to create a new apex class",
+  "how to retrieve all metadata",
+  "how to deploy all metadata",
+  "how to tail debug logs",
+  "how to create a scratch org",
+  "how to create a package",
+  "how to create a permission set",
+  // Add more example queries as needed
+];
+
 const Main = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const { query, setQuery, response, setResponse } = useAppContext();
 
-  const [currentQuery, setCurrentQuery] = React.useState(0);
-  const [currentChar, setCurrentChar] = React.useState(0);
+  const [currentQuery, setCurrentQuery] = useState(0);
+  const [currentChar, setCurrentChar] = useState(0);
 
-  const exampleQueries = [
-    "how to create a new apex class",
-    "how to retrieve all metadata",
-    "how to deploy all metadata",
-    "how to tail debug logs",
-    "how to create a scratch org",
-    "how to create a package",
-    "how to create a permission set",
-    // Add more example queries as needed
-  ];
-
-  React.useEffect(() => {
+  useEffect(() => {
     const queryTimer = setInterval(() => {
       setCurrentQuery((currentQuery + 1) % exampleQueries.length);
       setCurrentChar(0);
@@ -38,9 +38,7 @@ const Main = () => {
   }, [currentQuery]);
 
   const cleanup = (html: string = "") => {
-    html = html.replace(/>\s+</g, "><");
-    html = html.replace(/<br><br>/g, "<div>");
-    return html;
+    return html.replace(/>\s+</g, "><").replace(/<br><br>/g, "<div>");
   };
 
   const doGPT = async () => {
@@ -53,16 +51,20 @@ const Main = () => {
         },
       });
       const data = await res.json();
-      data.openai.references = data.openai.references.map((ref: any, i: number) => {
-        ref.index = i;
-        ref.content.help = ref.content.help || {};
-        ref.content.help.html = cleanup(ref.content.help?.html);
-        return ref;
-      });
-      setResponse(data);
       setError("");
+      if (res.status === 200) {
+        data.openai.references = data.openai.references.map((ref: any, i: number) => {
+          ref.index = i;
+          ref.content.help = ref.content.help || {};
+          ref.content.help.html = cleanup(ref.content.help?.html);
+          return ref;
+        });
+        setResponse(data);
+      } else {
+        setError(data.error);
+      }
     } catch (err) {
-      console.error(err);
+      console.error("Error: ", err);
       setError((err as any).message);
     } finally {
       setIsLoading(false);
@@ -98,11 +100,18 @@ const Main = () => {
           <span className="text-3xl font-bold">explorer &nbsp;</span>
         </div>
         <p className="mt-8">Find the right commands you need without digging through the documentation.</p>
-        <p className="mt-0">
+        <p className="mt-2 text-center">
           sf command explorer provides a quick way to find the right commands you need directly from
-          <a className="text-emerald-400 hover:underline" href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm" target="_blank" rel="noreferrer">
+          <a
+            className="text-emerald-400 hover:underline"
+            href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm"
+            target="_blank"
+            rel="noreferrer"
+          >
             &nbsp;sf cli documentation
           </a>
+          . You can ask questions like "how to create a new apex class" or "how to retrieve all metadata" and get the
+          right commands you need.
         </p>
         <p className="text-sm text-gray-500 m-4">Powered by OpenAI</p>
         <div className="flex items-center border-2 p-0 w-full my-3 relative">
@@ -153,7 +162,23 @@ const Main = () => {
             <span className="animate-blink">|</span>
           </p>
         </div>
-        {error && <p className="text-red-500 mt-4">{error}</p>}
+        {error && (
+          <div className="mt-4 bg-red-200 p-2 rounded flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-red-800 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <div>
+              <h2 className="text-red-800 font-bold">Error</h2>
+              <p className="text-red-800">{error}</p>
+            </div>
+          </div>
+        )}
         {response.openai?.references && (
           <div className="flex flex-col items-start border-2 p-4 w-full my-3 bg-white shadow-lg openai w-full">
             <div className="mb-6 last:mb-0 bg-gray-800 text-white p-5 rounded border-l-8 border-emerald-500 mb-10 w-full">
