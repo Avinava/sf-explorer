@@ -1,27 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Footer } from "../components/Footer";
 import { useAppContext } from "../Context";
 
+const exampleQueries = [
+  "how to create a new apex class",
+  "how to retrieve all metadata",
+  "how to deploy all metadata",
+  "how to tail debug logs",
+  "how to create a scratch org",
+  "how to create a package",
+  "how to create a permission set",
+  // Add more example queries as needed
+];
+
 const Main = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const { query, setQuery, response, setResponse } = useAppContext();
 
-  const [currentQuery, setCurrentQuery] = React.useState(0);
-  const [currentChar, setCurrentChar] = React.useState(0);
+  const [currentQuery, setCurrentQuery] = useState(0);
+  const [currentChar, setCurrentChar] = useState(0);
 
-  const exampleQueries = [
-    "how to create a new apex class",
-    "how to retrieve all metadata",
-    "how to deploy all metadata",
-    "how to tail debug logs",
-    "how to create a scratch org",
-    "how to create a package",
-    "how to create a permission set",
-    // Add more example queries as needed
-  ];
-
-  React.useEffect(() => {
+  useEffect(() => {
     const queryTimer = setInterval(() => {
       setCurrentQuery((currentQuery + 1) % exampleQueries.length);
       setCurrentChar(0);
@@ -38,9 +38,7 @@ const Main = () => {
   }, [currentQuery]);
 
   const cleanup = (html: string = "") => {
-    html = html.replace(/>\s+</g, "><");
-    html = html.replace(/<br><br>/g, "<div>");
-    return html;
+    return html.replace(/>\s+</g, "><").replace(/<br><br>/g, "<div>");
   };
 
   const doGPT = async () => {
