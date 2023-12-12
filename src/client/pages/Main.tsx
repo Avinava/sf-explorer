@@ -78,20 +78,20 @@ const Main = () => {
   };
   return (
     <div className="flex bg-white-100 font-sans items-center flex-col justify-between h-screen py-10 px-10 md:px-20">
-       <div className="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-50">
-    <div className="bg-blue-800 text-white text-sm p-3 md:rounded shadow-lg flex justify-between">
-      <div className="text-white inline-flex">
-        <a
-          className="font-medium hover:underline text-white"
-          href="https://github.com/Avinava/sf-explorer"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Check<span className="hidden sm:inline"> on GitHub</span>
-        </a>
+      <div className="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-50">
+        <div className="bg-blue-800 text-white text-sm p-3 md:rounded shadow-lg flex justify-between">
+          <div className="text-white inline-flex">
+            <a
+              className="font-medium hover:underline text-white"
+              href="https://github.com/Avinava/sf-explorer"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Check<span className="hidden sm:inline"> on GitHub</span>
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
       <div className="flex flex-col justify-center items-center w-full md:w-3/4 mt-5">
         <div className="inline-flex">
@@ -115,16 +115,14 @@ const Main = () => {
         </p>
         <p className="text-sm text-gray-500 m-4">Powered by OpenAI</p>
         <div className="flex items-center border-2 p-0 w-full my-3 relative">
-        <input
-        className={`text-2xl font-bold font-medium p-3 flex-grow border-blue-600 ${
-          isLoading ? "opacity-50" : ""
-        }`}
-        type="text"
-        value={query}
-        onChange={e => setQuery(e.target.value)}
-        onKeyPress={handleKeyPress}
-        placeholder="Enter what you want to do..."
-      />
+          <input
+            className={`text-2xl font-bold font-medium p-3 flex-grow border-blue-600 ${isLoading ? "opacity-50" : ""}`}
+            type="text"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Enter what you want to do..."
+          />
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center">
               <svg className="animate-spin h-6 w-6" viewBox="0 0 24 24">
