@@ -26,7 +26,7 @@ async function generateResponse(req: Request, res: Response) {
       },
     });
   } catch (error: any) {
-    console.log("error-happened:" , error);
+    console.log("error-happened:", error);
     return res.status(500).send({
       error: error.message,
     });

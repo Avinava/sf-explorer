@@ -96,14 +96,14 @@ const Main = () => {
       <div className="flex flex-col justify-center items-center w-full md:w-3/4 mt-5">
         <div className="inline-flex">
           <span className="text-3xl font-bold">sf&nbsp;</span>
-          <span className="text-3xl font-bold font-medium hover:underline text-blue-400">command&nbsp;</span>
+          <span className="text-3xl font-bold font-medium hover:underline text-blue-600">command&nbsp;</span>
           <span className="text-3xl font-bold">explorer &nbsp;</span>
         </div>
         <p className="mt-8">Find the right commands you need without digging through the documentation.</p>
         <p className="mt-2 text-center">
           sf command explorer provides a quick way to find the right commands you need directly from
           <a
-            className="text-blue-400 hover:underline"
+            className="text-blue-600 hover:underline"
             href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_unified.htm"
             target="_blank"
             rel="noreferrer"
@@ -136,7 +136,7 @@ const Main = () => {
             </div>
           )}
           <button
-            className="ml-2 bg-blue-600 text-white px-4 py-2 rounded h-full w-20 flex items-center justify-center"
+            className="ml-2 bg-blue-600 text-white px-4 py-2 rounded h-full w-30 flex items-center justify-center"
             onClick={doGPT}
             disabled={isLoading}
           >
@@ -150,7 +150,7 @@ const Main = () => {
                 ></path>
               </svg>
             ) : (
-              "Send"
+              "Search"
             )}
           </button>
         </div>
