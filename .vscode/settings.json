@@ -20,5 +20,11 @@
       "editor.formatOnPaste": true,
       "editor.detectIndentation": true,
       "editor.tabSize": 2
+    },
+    "[typescriptreact]": {
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": true,
+      "editor.detectIndentation": true,
+      "editor.tabSize": 2
     }
   }
