@@ -35,6 +35,16 @@ To set up sf-explorer for your project, follow the steps below:
 3. Run `yarn dev` to start sf-explorer locally.
 4. Open http://localhost:7456/ to access the app.
 
+## Data Ingestion and Downloading
+
+### Ingest.ts
+
+`ingest.ts` is a script responsible for loading and processing Salesforce CLI documentation from a specified directory. It splits the documents into chunks and stores them in a Chroma vector store. This process helps in creating an indexed data store that can be used to provide accurate and relevant command suggestions based on user queries.
+
+### Download.ts
+
+`download.ts` is a script that downloads all the Salesforce CLI command documentation in JSON format. It fetches the metadata, processes the content, and stores it in a specified directory for further use. This script ensures that the most recent and relevant documentation is available for the `ingest.ts` script to process and store in the Chroma vector store.
+
 ## Publishing
 
 To publish your sf-explorer app, follow these steps:
