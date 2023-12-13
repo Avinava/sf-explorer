@@ -8,6 +8,8 @@ sf-explorer is a tool that helps you find the right sf commands without having t
 
 The tool leverages OpenAI embeddings to understand the context and semantics of your queries. It uses the ConversationalRetrievalQAChain from Langchain to generate responses, ensuring that the answers you get are not only accurate but also contextually relevant to your query.
 
+The tool showcases the power of document search and indexing using OpenAI embeddings to understand the context and semantics of your queries.
+
 Demo : https://explorer.sfdxy.com/
 
 ## Prerequisites
