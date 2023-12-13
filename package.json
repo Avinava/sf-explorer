@@ -1,7 +1,7 @@
 {
   "name": "sf-explorer",
   "version": "1.0.1",
-  "description": "Find the right sf commands without digging through the documentation.",
+  "description": "Find the right sf cli commands without digging through the documentation.",
   "author": "Avi",
   "license": "MIT",
   "scripts": {
@@ -11,19 +11,15 @@
     "build": "rimraf dist && tsc -p tsconfig.prod.json && yarn build:client && yarn build:server && yarn copy-files",
     "build:client": "vite build --outDir dist/client --ssrManifest",
     "build:server": "vite build --ssr src/client/entry-server.tsx --outDir dist/server",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
-    "coverage": "vitest --coverage",
-    "typecheck": "tsc --noEmit",
     "serve": "yarn build && cross-env NODE_ENV=production yarn ts-node ./server",
     "serve-only": "cross-env NODE_ENV=production yarn ts-node ./server",
     "serve:local": "vite serve",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles static/* dist/assets && copyfiles index.html dist && copyfiles -f dist/client/assets/* dist/assets",
     "format": "prettier --write .",
+    "download": "npx ts-node scripts/download.ts",
     "ingest": "npx ts-node scripts/ingest.ts",
-    "load": "npx ts-node scripts/loader.ts",
-    "refresh-chroma": "yarn ingest && yarn load"
+    "refresh-chroma": "yarn download && yarn ingest"
   },
   "dependencies": {
     "@types/fs-extra": "^11.0.1",
